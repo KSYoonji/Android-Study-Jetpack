@@ -1,4 +1,5 @@
 # ViewModel과 LiveData
+뷰모델 + 라이브데이터 + 데이터바인딩 조합으로 자주 사용됨!
 
 ## 🙌View Model
 #### 1-1. 개념
@@ -86,8 +87,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 }
 ```
-💡뷰모델 인스턴스는 ViewModelProvider을 통해 만든다. 이때 this는 MainActivity를 가리킨다. <br>
-이 MainActivity는 HashMap 구조의 ViewModelStore를 가지고 있어서 MyNumberViewModel을 키로 값을 찾는다. <br>
+💡뷰모델 인스턴스는 `ViewModelProvider`을 통해 만든다. 이때 `this`는 MainActivity를 가리킨다. <br>
+이 MainActivity는 HashMap 구조의 `ViewModelStore`를 가지고 있어서 MyNumberViewModel을 키로 값을 찾는다. <br>
 즉, 하나의 액티비티를 소유자로 지정하면 같은 뷰모델을 공유할 수 있다. = 데이터 공유 가능 <br>
 뷰모델을 각각 다른 소유자가 생성하면 별개의 메모리 공간을 사용하는 다른 객체가 된다.
 
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 - 뷰모델에 context 저장하지 않기. 이미 destroy된 액티비티에 묶여 Memory leak이 발생할 수 있기 때문.
 - Application context를 사용한다면 `AndroidViewModel` 클래스를 상속받으면 됨.
 - 뷰모델(많은 데이터 보관)과 onSaveInstanceState(적고 UI 상태를 되돌릴 만한 데이터 보관)는 함께 이용 가능.
-    - EX) 뷰모델: 유저 아이디, 이름, 생일, 이미지.. / onSaveInstanceState: 유저 아이디
+    - EX) `ViewModel`: 유저 아이디, 이름, 생일, 이미지.. / `onSaveInstanceState`: 유저 아이디
 
 <br><br>
 
@@ -113,7 +114,20 @@ UI 컨트롤러는 변경된 데이터를 UI에 반영
 <br><br>
 
 #### 2-3.사용법
-_✓ 관용적으로 MutableLiveData 변수명 앞에는 `_`를 붙이고 LiveData는 붙이지 않는다._
+_✓ 관용적으로 `MutableLiveData` 변수명 앞에는 `_`를 붙이고 `LiveData`는 붙이지 않는다._ <br>
+
+A. 액티비티 파일
+(위의 코드와 중복되어 추가 설명할 부분만 기술)
+```Kotlin
+ myNumberViewModel.currentValue.observe(this, Observer{
+            binding!!.numberTextview.text = it.toString()
+        })
+
+```
+여기에서 this는 `Observer`를 생성한 액티비티 말함. `observe()` 메소드는 `LifecycleOwner` 객체를 사용하기 때문에 `Observer`의 생명주기는 UI 컨트롤러의 생명주기 즉, this의 생명주기를 따름. <br>
+*Fragment의 경우에는 `this`가 아니라 `viewLifecycleOwner`을 사용. <br>
+*`observeForever` 메서드를 사용하면 LifecycleOwner 객체가 없는 관찰자를 등록할 수 있음. 그러면 관계없이 항상 알림을 받을 수 있음. 대신 `removeObserver` 메소드를 사용해 직접 삭제해줘야 함.
+
 
 
 <br><br>

@@ -20,8 +20,86 @@ _**-AAC**: 클린 아키텍처를 쉽게 구현할 수 있도록 만든 라이�
 - 프래그먼트 간의 데이터 공유 용이
 
 ![image](https://user-images.githubusercontent.com/44793355/163011151-8a5389aa-090d-4792-9e92-b87822ae1791.png)
+<br><br>
+
+#### 1-3. 사용법
+A. 모듈 수준 gradle에 dependencies 추가
+```
+// 뷰모델 
+implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha04")  
+// 라이브데이터
+implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-alpha04")  
+```
+
+B. 뷰모델 파일 만들기
+```Kotlin
+class MyNumberViewModel : ViewModel(){
+    private val _currentValue = MutableLiveData<Int>()
+    val currentValue : LiveData<Int>
+        get() = _currentValue
+
+    init{
+        _currentValue.value = 0
+    }
+    
+     fun updateValue(actionType: NumberActionType, input:Int){
+        when(actionType){
+            NumberActionType.PLUS ->
+                _currentValue.value = _currentValue.value?.plus(input)
+            NumberActionType.MINUS ->
+                _currentValue.value = _currentValue.value?.minus(input)
+        }
+    }
+}
+```
+
+C. 액티비티 파일
+```Kotlin
+class MainActivity : AppCompatActivity(), View.OnClickListener {
+    private var binding: ActivityMainBinding? = null
+    lateinit var myNumberViewModel: MyNumberViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding!!.root)
+
+        myNumberViewModel = ViewModelProvider(this).get(MyNumberViewModel::class.java)  // 💡
+
+        myNumberViewModel.currentValue.observe(this, Observer{
+            binding!!.numberTextview.text = it.toString()
+        })
+
+        binding!!.plusBtn.setOnClickListener(this)
+        binding!!.minusBtn.setOnClickListener(this)
+    }
+
+    override fun onClick(view: View?) {
+        val userInput = binding?.userinputEdittext?.text.toString().toInt()
+
+        when(view){
+            binding?.plusBtn ->
+                myNumberViewModel.updateValue(actionType = NumberActionType.PLUS, userInput)
+            binding?.minusBtn ->
+                myNumberViewModel.updateValue(actionType = NumberActionType.MINUS, userInput)
+        }
+    }
+}
+```
+💡뷰모델 인스턴스는 ViewModelProvider을 통해 만든다. 이때 this는 MainActivity를 가리킨다. <br>
+이 MainActivity는 HashMap 구조의 ViewModelStore를 가지고 있어서 MyNumberViewModel을 키로 값을 찾는다. <br>
+즉, 하나의 액티비티를 소유자로 지정하면 같은 뷰모델을 공유할 수 있다. = 데이터 공유 가능 <br>
+뷰모델을 각각 다른 소유자가 생성하면 별개의 메모리 공간을 사용하는 다른 객체가 된다.
 
 <br>
+
+#### 1-4. 주의할 점
+- 뷰모델에 context 저장하지 않기. 이미 destroy된 액티비티에 묶여 Memory leak이 발생할 수 있기 때문.
+- Application context를 사용한다면 `AndroidViewModel` 클래스를 상속받으면 됨.
+- 뷰모델(많은 데이터 보관)과 onSaveInstanceState(적고 UI 상태를 되돌릴 만한 데이터 보관)는 함께 이용 가능.
+    - EX) 뷰모델: 유저 아이디, 이름, 생일, 이미지.. / onSaveInstanceState: 유저 아이디
+
+<br><br>
 
 ## 🙌Live Data
 #### 2-1. 개념

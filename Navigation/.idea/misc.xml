@@ -3,7 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/66 - StudyAndroid/Navigation/app/src/main/res/drawable/ic_friend.xml" value="0.1975" />
+        <entry key="..\:/66 - StudyAndroid/Navigation/app/src/main/res/drawable/ic_home.xml" value="0.1975" />
+        <entry key="..\:/66 - StudyAndroid/Navigation/app/src/main/res/drawable/ic_music.xml" value="0.1975" />
         <entry key="..\:/66 - StudyAndroid/Navigation/app/src/main/res/layout/activity_main.xml" value="0.15534420289855072" />
+        <entry key="..\:/66 - StudyAndroid/Navigation/app/src/main/res/layout/fragment_friends.xml" value="0.18958333333333333" />
+        <entry key="..\:/66 - StudyAndroid/Navigation/app/src/main/res/layout/fragment_home.xml" value="0.18958333333333333" />
+        <entry key="..\:/66 - StudyAndroid/Navigation/app/src/main/res/layout/fragment_music.xml" value="0.18958333333333333" />
+        <entry key="..\:/66 - StudyAndroid/Navigation/app/src/main/res/menu/bottom_vav_menu.xml" value="0.18958333333333333" />
       </map>
     </option>
   </component>

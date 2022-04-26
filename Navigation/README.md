@@ -7,16 +7,16 @@ Activity와 Fragment 외에 Custom View를 destination으로 지정할 수 있�
 <br><br>
 
 ### 2. 구성요소
-#### Navigation Graph 
+#### 🔹Navigation Graph 
 새로운 resource type으로, Navigation 관련 정보를 한 곳에 모아놓는 XML 파일. 안드로이드 스튜디오 3.3의 Navigation Editor에서 볼 수 있다. <br><br>
 (1) _destination_: Navigation Editor에 나타나는 화면들로, 사용자가 이동(탐색)할 수 있는 화면들이다. 속성으로 argument, deeplink 등을 갖고있다.  <br>
 (2) _action_: 사용자가 앱을 탐색할 때 destination들 간의 논리적 경로를 보여준다. <br>
 <img src="https://user-images.githubusercontent.com/44793355/165335575-b4da289f-8112-487e-947c-37e8416f05cb.png"  width="600" />
 
-#### NavHost
+#### 🔹NavHost
 개별 컨텐츠인 destination들이 swap되는 빈 컨테이너이다. NavHostFragment에 의해 구현된다. 
  
-#### NavController
+#### 🔹NavController
 
 
 ### 2. 사용하는 이유
